@@ -163,7 +163,7 @@
       pygame.init()
       # creamos la ventana y le indicamos un titulo:
       screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-      pygame.display.set_caption("tutorial pygame parte 2")
+      pygame.display.set_caption("temario")
 
       # cargamos el fondo y una imagen (se crea objetos "Surface")
       fondo = pygame.image.load("fondo.jpg").convert()
@@ -191,6 +191,152 @@
 
   Luego se hizo _screen.blit(fondo, (0, 0)) y screen.blit(tux, (550, 200))_, con esto se le indica que cargue la imagen del fondo justo en la coordenada (0,0) para que cubra toda la pantalla (cualquier otro valor hubiera dejado el fondo desplazado) y en el caso de _tux_ se le indica que lo cargue a la derecha.
 
+### Moviendo la imagen
+
+  Ahora vamos a hacer que tux se mueva a la izquierda, para ello, simplemente a su posición en el eje x le vamos a restar -1 en cada ciclo del bucle principal. Para ello modificamos el código para que quede de la siguiente manera:
+
+```
+  #!/usr/bin/env python
+  # -*- coding: utf-8 -*-
+  # ---------------------------
+  # Importacion de los módulos
+  # ---------------------------
+
+  import pygame
+  from pygame.locals import *
+  import sys
+
+  # -----------
+  # Constantes
+  # -----------
+
+  SCREEN_WIDTH = 640
+  SCREEN_HEIGHT = 480
+
+  # ------------------------------
+  # Clases y Funciones utilizadas
+  # ------------------------------
+  # ------------------------------
+  # Funcion principal del juego
+  # ------------------------------
+  def main():
+      pygame.init()
+      # creamos la ventana y le indicamos un titulo:
+      screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+      pygame.display.set_caption("temario")
+
+      # cargamos el fondo y una imagen (se crea objetos "Surface")
+      fondo = pygame.image.load("fondo.jpg").convert()
+      tux = pygame.image.load("tux.png").convert_alpha()
+
+      tux_pos_x = 550
+      tux_pos_y = 200
+
+      # Indicamos la posicion de las "Surface" sobre la ventana
+      screen.blit(tux, (tux_pos_x, tux_pos_y))
+      screen.blit(fondo, (0, 0))
+      # se muestran lo cambios en pantalla
+      pygame.display.flip()
+
+      # el bucle principal del juego
+      while True:
+          # le restamos 1 a la coordenada x de tux
+          # asi se mueve un poquito a la izquierda
+          tux_pos_x = tux_pos_x - 1
+          screen.blit(tux, (tux_pos_x, tux_pos_y))
+          # se muestran lo cambios en pantalla
+          pygame.display.flip()
+
+          # Posibles entradas del teclado y mouse
+          for event in pygame.event.get():
+              if event.type == pygame.QUIT:
+                  sys.exit()
+
+
+  if __name__ == "__main__":
+      main()
+  ```    
+  y el resultado fue un fallo gigantesco:
+
+### Fallo Gigantesco
+
+  ___Explicación___: _lo que paso es que se nos olvido borrar al pingüino de la pantalla antes de moverlo a su nueva posición, por lo que veremos en realidad un "rastro" del movimiento mientras dibujamos continuamente al pingüino en nuevas posiciones. Además nunca le pusimos limite al movimiento del pingüino, por lo que una vez que alcanzo el borde de la pantalla, siguió moviéndose hacia la izquierda hacia el infinito y mas allá... [1].
+
+
+### Refrescando/borrando la pantalla
+
+  La solución mas fácil para borrar el "rastro" que se deja al moverse, es simplemente redibujar toda la pantalla (fondo incluido) en cada ciclo del juego, por lo tanto dentro del while, después de actualizar la posición del pingüino, se redibuja tota la pantalla usando blit() y pygame.display.flip()
+
+```
+  #!/usr/bin/env python
+  # -*- coding: utf-8 -*-
+  # ---------------------------
+  # Importacion de los módulos
+  # ---------------------------
+
+  import pygame
+  from pygame.locals import *
+  import sys
+
+  # -----------
+  # Constantes
+  # -----------
+
+  SCREEN_WIDTH = 640
+  SCREEN_HEIGHT = 480
+
+  # ------------------------------
+  # Clases y Funciones utilizadas
+  # ------------------------------
+  # ------------------------------
+  # Funcion principal del juego
+  # ------------------------------
+
+
+  def main():
+      pygame.init()
+      # creamos la ventana y le indicamos un titulo:
+      screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+      pygame.display.set_caption("temario")
+
+      # cargamos el fondo y una imagen (se crea objetos "Surface")
+      fondo = pygame.image.load("fondo.jpg").convert()
+      tux = pygame.image.load("tux.png").convert_alpha()
+
+      tux_pos_x = 550
+      tux_pos_y = 200
+
+      # Indicamos la posicion de las "Surface" sobre la ventana
+      screen.blit(tux, (tux_pos_x, tux_pos_y))
+      screen.blit(fondo, (0, 0))
+      # se muestran lo cambios en pantalla
+      pygame.display.flip()
+
+      # el bucle principal del juego
+      while True:
+          # le restamos 1 a la coordenada x de tux y comprobamos
+          # que no alcance el borde de la pantalla
+          tux_pos_x = tux_pos_x - 1
+          if tux_pos_x < 1:
+              tux_pos_x = 550
+
+          # Redibujamos todos los elementos de la pantalla
+          screen.blit(fondo, (0, 0))
+          screen.blit(tux, (tux_pos_x, tux_pos_y))
+          # se muestran lo cambios en pantalla
+          pygame.display.flip()
+
+          # Posibles entradas del teclado y mouse
+          for event in pygame.event.get():
+              if event.type == pygame.QUIT:
+                  sys.exit()
+
+
+  if __name__ == "__main__":
+      main()
+  ```
+
+  Además después de actualizar la tux_pos_x se coloco un if, de tal manera de que si esa posición es 0 o negativa (o sea esta fuera de la pantalla), la tux_pos_x tome un valor de 550 (550 + 90px que mide de ancho la imagen de tux = 640 px, o sea que la imagen se muestre al borde derecho de la pantalla).
 
 
 </div>
