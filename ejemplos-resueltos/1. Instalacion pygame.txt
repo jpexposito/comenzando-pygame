@@ -1,0 +1,2 @@
+INSTALAR PYGAME
+En la consola teclear: pip install pygame
