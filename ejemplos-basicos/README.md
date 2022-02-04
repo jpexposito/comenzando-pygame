@@ -14,55 +14,55 @@
   - Mostrar una imagen y mover la imagen en la pantalla.
   - A continuación la explicación completa.
 
-  ## Creando una ventana
+## Creando una ventana
 
-    Primero importamos los módulos y definimos dos variables globales (por metodología se suelen poner en mayúsculas) que son resolución de la pantalla del juego.
+  Primero importamos los módulos y definimos dos variables globales (por metodología se suelen poner en mayúsculas) que son resolución de la pantalla del juego.
 
-    Luego hay que crear la ventana, para ello dentro de la función main() usamos _pygame.display.set_mode y pygame.display.set_caption_, que establecen el tamaño de la ventana y el titulo de esta respectivamente:
+  Luego hay que crear la ventana, para ello dentro de la función main() usamos _pygame.display.set_mode y pygame.display.set_caption_, que establecen el tamaño de la ventana y el titulo de esta respectivamente:
 
-    ```
-    #!/usr/bin/env python
-    # -*- coding: utf-8 -*-
+  ```
+  #!/usr/bin/env python
+  # -*- coding: utf-8 -*-
 
-    # Escrito por jpexposito
+  # Escrito por jpexposito
 
-    # ---------------------------
-    # Importacion de los módulos
-    # ---------------------------
+  # ---------------------------
+  # Importacion de los módulos
+  # ---------------------------
 
-    import pygame
-    from pygame.locals import *
+  import pygame
+  from pygame.locals import *
 
-    # -----------
-    # Constantes
-    # -----------
+  # -----------
+  # Constantes
+  # -----------
 
-    SCREEN_WIDTH = 640
-    SCREEN_HEIGHT = 480
+  SCREEN_WIDTH = 640
+  SCREEN_HEIGHT = 480
 
-    # ------------------------------
-    # Clases y Funciones utilizadas
-    # ------------------------------
+  # ------------------------------
+  # Clases y Funciones utilizadas
+  # ------------------------------
 
-    # ------------------------------
-    # Funcion principal del juego
-    # ------------------------------
+  # ------------------------------
+  # Funcion principal del juego
+  # ------------------------------
 
-    def main():
-        pygame.init()
-        # creamos la ventana y le indicamos un titulo:
-        screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        pygame.display.set_caption("temario")
+  def main():
+      pygame.init()
+      # creamos la ventana y le indicamos un titulo:
+      screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+      pygame.display.set_caption("temario")
 
-    if __name__ == "__main__":
+  if __name__ == "__main__":
         main()
-    ```
+  ```
 
-    Ahora lo ejecutamos y sorpresa... se crea la ventana pero inmediatamente se cierra, eso ocurre porque no hemos definido el bucle o loop principal del juego, tal como lo muestra este [video](https://youtu.be/wASkscCttMg).
+  Ahora lo ejecutamos y sorpresa... se crea la ventana pero inmediatamente se cierra, eso ocurre porque no hemos definido el bucle o loop principal del juego, tal como lo muestra este [video](https://youtu.be/wASkscCttMg).
 
 ## El bucle principal del juego
 
-    Los juegos generalmente ejecutan un bucle infinito (su bucle principal), lo cual permite que el juego continúe corriendo hasta la que se se cumpla una condición que lo termine (como por ejemplo que el jugador pierda todas sus vidas o se rinda), mas o menos lo que muestra este diagrama:
+  Los juegos generalmente ejecutan un bucle infinito (su bucle principal), lo cual permite que el juego continúe corriendo hasta la que se se cumpla una condición que lo termine (como por ejemplo que el jugador pierda todas sus vidas o se rinda), mas o menos lo que muestra este diagrama:
 
 ### bucle principal
 
@@ -110,14 +110,13 @@
 
   Lo que hace es simple, una vez dentro del bucle, recorre la lista que devuelve _pygame.event.get()_ (es una lista con todos los eventos que registra pygame, como por ejemplo cuando uno presiona una tecla), si dentro de esa lista esta el evento _pygame.QUIT_ (o sea cerrar la ventana) el programa ejecuta la orden sys.exit() (que termina la ejecución del programa y es parte del modulo sys, por eso lo importamos), en caso contrario (que aun no se produzca ese evento) seguirá esperando.
 
-### Cargando el fondo y una imagen
+## Cargando el fondo y una imagen
 
   Primero para cargar las imágenes usamos pygame.image.load(), con ello se crea un objeto que contiene la superficie de la imagen (aun no la muestra). Luego de esto hay que indicar las posiciones de esta imagen, para lo cual se usa blit(imagen, (coordenada_x, coordenada_y))
 
   Puedes pensar en la ventana de pygame como un plano en 2 ejes, con una pequeña diferencia: el origen (coordenadas 0,0) se encuentra en la esquina superior izquierda de la ventana. Por lo tanto en valor de las coordenadas en el eje x (horizontal) va aumentando (y es positivo) mientras se avanza a la derecha, mientras que en el eje y (vertical) el valor va aumentando (y es positivo) a medida que se avanza hacia abajo (o sea lo contrario de lo que se acostumbra, para el eje y).
 
   Para que quede más claro, un esquema en que muestra en que posición cargaremos las imágenes (Nota: pygame siempre usa como referencia la esquina superior izquierda de las imágenes).
-
 
   <div align="center">
     <img src="https://pythonmania.files.wordpress.com/2010/03/pygame_coordenadas.png" width="500px" />
@@ -126,6 +125,7 @@
   Ahora que ya sabemos sobre coordenadas, vamos a insertar un fondo y una imagen en nuestra ventana, usaremos las siguientes:
 
   __Fondo__:
+
   <div align="center">
     <img src="https://pythonmania.files.wordpress.com/2010/03/fondo.jpg" />
   </div>
@@ -135,6 +135,7 @@
   <div align="center">
     <img src="https://pythonmania.files.wordpress.com/2010/03/tux.png" />
   </div>
+
   Vamos con el código:
 
   ```
@@ -183,7 +184,7 @@
                   sys.exit()
 
 
-  if __name__ == "__main__":
+      if __name__ == "__main__":
       main()
   ```
 
@@ -191,7 +192,7 @@
 
   Luego se hizo _screen.blit(fondo, (0, 0)) y screen.blit(tux, (550, 200))_, con esto se le indica que cargue la imagen del fondo justo en la coordenada (0,0) para que cubra toda la pantalla (cualquier otro valor hubiera dejado el fondo desplazado) y en el caso de _tux_ se le indica que lo cargue a la derecha.
 
-### Moviendo la imagen
+## Moviendo la imagen
 
   Ahora vamos a hacer que tux se mueva a la izquierda, para ello, simplemente a su posición en el eje x le vamos a restar -1 en cada ciclo del bucle principal. Para ello modificamos el código para que quede de la siguiente manera:
 
@@ -263,7 +264,7 @@
   ___Explicación___: _lo que paso es que se nos olvido borrar al pingüino de la pantalla antes de moverlo a su nueva posición, por lo que veremos en realidad un "rastro" del movimiento mientras dibujamos continuamente al pingüino en nuevas posiciones. Además nunca le pusimos limite al movimiento del pingüino, por lo que una vez que alcanzo el borde de la pantalla, siguió moviéndose hacia la izquierda hacia el infinito y mas allá... [1].
 
 
-### Refrescando/borrando la pantalla
+## Refrescando/borrando la pantalla
 
   La solución mas fácil para borrar el "rastro" que se deja al moverse, es simplemente redibujar toda la pantalla (fondo incluido) en cada ciclo del juego, por lo tanto dentro del while, después de actualizar la posición del pingüino, se redibuja tota la pantalla usando blit() y pygame.display.flip()
 
@@ -291,7 +292,6 @@
   # ------------------------------
   # Funcion principal del juego
   # ------------------------------
-
 
   def main():
       pygame.init()
@@ -338,5 +338,8 @@
 
   Además después de actualizar la tux_pos_x se coloco un if, de tal manera de que si esa posición es 0 o negativa (o sea esta fuera de la pantalla), la tux_pos_x tome un valor de 550 (550 + 90px que mide de ancho la imagen de tux = 640 px, o sea que la imagen se muestre al borde derecho de la pantalla).
 
+
+## Referencias
+  - [Documentación General](https://www.pygame.org/wiki/).
 
 </div>

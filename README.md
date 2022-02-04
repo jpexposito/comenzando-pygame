@@ -156,8 +156,8 @@
 
 - [Instalación](https://www.pygame.org/wiki/GettingStarted#Pygame%20Installation).
 - [ejemplos-basicos](ejemplos-basicos).
+- [Documentación General](https://www.pygame.org/wiki/).
 <!--
-- []().
 - []().
 -->
 </div>
